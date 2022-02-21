@@ -11,10 +11,7 @@ sys.path.append(os.pardir + "/Python")
 
 #描画モジュール
 import matplotlib.pyplot as plt
-import class_pollution_state_drawer_2D
 
-import Function_Objects
-from Function_Objects import AdjustAspectEqu
 
 #計算用モジュール
 import random
@@ -40,12 +37,7 @@ import Origin_History_Creater
 import time
 import datetime
 
-#データ保存ディレクトリ作成モジュール
-import Directory_Maker
-import Daily_Name_Directory_Maker
 
-#データ保存用モジュール
-import Data_Recorder
 
 
 import Pollution
@@ -55,15 +47,11 @@ from Pollution import Pollution
 #モジュールの内容の変更を適用
 importlib.reload(Pollution_Origin)
 importlib.reload(Calculator_Of_Pollutions_Around_Origin)
-importlib.reload(Data_Recorder)
+
 importlib.reload(Origin_Creater)
 
-importlib.reload(class_pollution_state_drawer_2D)
-importlib.reload(Function_Objects)
 importlib.reload(Origin_History_Creater)
 
-importlib.reload(Directory_Maker)
-importlib.reload(Daily_Name_Directory_Maker)
 #######################################################################
 
 
