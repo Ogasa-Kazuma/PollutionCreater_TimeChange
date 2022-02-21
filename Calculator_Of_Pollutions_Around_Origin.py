@@ -8,6 +8,10 @@ import math
 import Pollution_Origin
 from Pollution_Origin import PollutionOrigin
 
+import Pollution
+importlib.reload(Pollution)
+from Pollution import Pollution
+
 
 
 importlib.reload(Pollution_Origin)
@@ -46,7 +50,7 @@ class CalculatorOfPollutionsAroundOrigin:
                 if(pollutionsDist[x][y] < 0):
                     pollutionsDist[x][y] = 0
 
-        return pollutionsDist
+        return Pollution(pollutionsDist)
 
 
     def __CalculateAbsoluteDistance(self, xBegin, yBegin, xEnd, yEnd):
