@@ -11,7 +11,6 @@ import PointClass
 importlib.reload(PointClass)
 
 sys.path.append(os.pardir + "/Python")
-
 #描画モジュール
 import matplotlib.pyplot as plt
 
@@ -28,7 +27,7 @@ import copy
 #汚染源モジュール
 import Pollution_Origin
 from Pollution_Origin import PollutionOrigin
-import Origin_Creater
+
 
 #汚染の時間変化計算モジュール
 import Calculator_Of_Pollutions_Around_Origin
@@ -51,7 +50,8 @@ from Pollution import Pollution
 importlib.reload(Pollution_Origin)
 importlib.reload(Calculator_Of_Pollutions_Around_Origin)
 
-importlib.reload(Origin_Creater)
+import Pollution_Origin_Data_Creater
+importlib.reload(Pollution_Origin_Data_Creater)
 
 importlib.reload(Origin_History_Creater)
 
@@ -74,12 +74,15 @@ def main():
 #############汚染源を作成####################
     origins = list()
     historyCreater = Origin_History_Creater.OriginHistoryCreater()
-    originCreater = Origin_Creater.OriginCreater(Pollution_Origin.PollutionOrigin, historyCreater)
+    originCreater = Pollution_Origin_Data_Creater.PollutionOriginDataCreater()
 
-    origin1 = originCreater.Create(dict(x = 0, y = 80, startHistory = 100,\
-                        t_max = 4000, maxCycleTime = 20, changePerSec = 1))
-    origin2 = originCreater.Create(dict(x = 0, y = 10, startHistory = 100,\
-                        t_max = 4000, maxCycleTime = 20, changePerSec = 1))
+
+    origin1 = originCreater.Create(x = 0, y = 80, startPollution = 100,\
+                        maxTime = 4000, maxCycleTime = 20, maxChangePerSec = 1)
+
+    origin2 = originCreater.Create(x = 0, y = 10, startPollution = 100,\
+                        maxTime = 4000, maxCycleTime = 20, maxChangePerSec = 1)
+
     origins.append(origin1)
     origins.append(origin2)
 ##################################################
