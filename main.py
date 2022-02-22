@@ -24,16 +24,14 @@ import math
 from itertools import chain
 import copy
 
-#汚染源モジュール
-import Pollution_Origin
-from Pollution_Origin import PollutionOrigin
+
 
 
 #汚染の時間変化計算モジュール
 import Calculator_Of_Pollutions_Around_Origin
 from Calculator_Of_Pollutions_Around_Origin import CalculatorOfPollutionsAroundOrigin
-import Origin_History_Creater
 
+importlib.reload(Calculator_Of_Pollutions_Around_Origin)
 
 #時間モジュール
 import time
@@ -47,14 +45,10 @@ importlib.reload(Pollution)
 from Pollution import Pollution
 
 #モジュールの内容の変更を適用
-importlib.reload(Pollution_Origin)
-importlib.reload(Calculator_Of_Pollutions_Around_Origin)
+
 
 import Pollution_Origin_Data_Creater
 importlib.reload(Pollution_Origin_Data_Creater)
-
-importlib.reload(Origin_History_Creater)
-
 
 #######################################################################
 
@@ -73,7 +67,7 @@ def main():
 
 #############汚染源を作成####################
     origins = list()
-    historyCreater = Origin_History_Creater.OriginHistoryCreater()
+
     originCreater = Pollution_Origin_Data_Creater.PollutionOriginDataCreater()
 
 
@@ -98,18 +92,21 @@ def main():
 
 
 
-    allPollutions = Pollution([[0 for y in range(fieldY)] for x in range(fieldX)])
+
 
     calculator = CalculatorOfPollutionsAroundOrigin()
         #1秒分の濃度分布変化を計算、保存
-    for origin_i in origins:
 
-        pollutionsDist = calculator.CalcDist(origin_i, fieldX, fieldY, 100, decreasingRatio, flowSpeed_ms)
-        allPollutions.Add(pollutionsDist)
-        #複数の汚染源を足し合わせる
+    for t_i in range(1, 100):
+        allPollutions = Pollution([[0 for y in range(fieldY)] for x in range(fieldX)])
+        for origin_i in origins:
+            pollutionsDist = calculator.CalcDist(origin_i, fieldX, fieldY, t_i, decreasingRatio, flowSpeed_ms)
+            allPollutions.Add(pollutionsDist)
+        allPollutions.Save("DataLog/unko2.pkl", 'pkl')
+            #複数の汚染源を足し合わせる
+        #allPollutions.View()
 
-    allPollutions.View()
-    allPollutions.Save("DataLog/unko2.csv", 'csv')
+
 
 
 

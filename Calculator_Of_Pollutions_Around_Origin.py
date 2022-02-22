@@ -5,18 +5,16 @@ import copy
 import numpy as np
 import importlib
 import math
-import Pollution_Origin
-from Pollution_Origin import PollutionOrigin
+
 
 import Pollution
 importlib.reload(Pollution)
 from Pollution import Pollution
 
-importlib.reload(Pollution_Origin)
 
 import PointClass
 importlib.reload(PointClass)
-
+import time
 
 
 
@@ -29,6 +27,7 @@ class CalculatorOfPollutionsAroundOrigin:
     def CalcDist(self, origin, xlim_m, ylim_m, time_sec, decreasingRatio, flowSpeed_ms):
         """汚染源周りの汚染濃度についての時間変化を計算するメソッド"""
         pollutionsDist = np.zeros((xlim_m, ylim_m))
+
 
 
         for x_i in range(xlim_m):
@@ -44,11 +43,6 @@ class CalculatorOfPollutionsAroundOrigin:
                 if(pollutionsDist[x_i][y_i] < 0):
                     pollutionsDist[x_i][y_i] = 0
 
+
+
         return Pollution(pollutionsDist)
-
-
-    def __CalculateAbsoluteDistance(self, xBegin, yBegin, xEnd, yEnd):
-
-        diff = math.sqrt((xEnd - xBegin) * (xEnd - xBegin) + (yEnd- yBegin) * (yEnd - yBegin))
-
-        return  diff

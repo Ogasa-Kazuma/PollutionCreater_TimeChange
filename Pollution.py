@@ -8,20 +8,20 @@ from itertools import chain
 class Pollution:
 
     def __init__(self, pollutionPoints):
-        self.__pollutionPoints = np.array(pollutionPoints)
+        self.__pollutionPoints = pollutionPoints
 
 
     def GetPollution(self, x, y):
         return self.__pollutionPoints[x][y]
 
     def IsInRange(self, x, y):
-        xlim, ylim  = self.__pollutionPoints.shape
+        xlim, ylim  = self.__XY_Limits()
         isInRange = (x >= 0 and x < xlim and y >= 0 and y < ylim)
         return isInRange
 
     def Add(self, pollution):
 
-        xlim, ylim = self.__pollutionPoints.shape
+        xlim, ylim = self.__XY_Limits()
         for x_i in range(xlim):
             for y_i in range(ylim):
                 if(pollution.IsInRange(x_i, y_i)):
@@ -34,18 +34,18 @@ class Pollution:
 
     def View(self, cmap = 'binaly'):
 
-
-
         xList, yList, pollutionList = self.__OrderToView()
         #matplotlibという描画ライブラリで散布図を描画
         ax = plt.figure().add_subplot(111)
         ax.scatter(xList, yList, c = pollutionList, cmap = 'binary', alpha = 0.3)
-
+        plt.show()
         return None
 
 
     def __XY_Limits(self):
-        return self.__pollutionPoints.shape
+        xlim = len(self.__pollutionPoints)
+        ylim = len(self.__pollutionPoints[0])
+        return xlim, ylim
 
 
     def __OrderToView(self):
