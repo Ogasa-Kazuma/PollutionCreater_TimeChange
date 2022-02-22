@@ -7,6 +7,9 @@ import sys
 import os
 from pathlib import Path
 
+import PointClass
+importlib.reload(PointClass)
+
 sys.path.append(os.pardir + "/Python")
 
 #描画モジュール
@@ -52,6 +55,7 @@ importlib.reload(Origin_Creater)
 
 importlib.reload(Origin_History_Creater)
 
+
 #######################################################################
 
 
@@ -59,20 +63,12 @@ importlib.reload(Origin_History_Creater)
 #########################################################################################
 def main():
 
-    #データ保存用のディレクトリを作成
-    dirMaker = Directory_Maker.DirectoryMaker()
-    dailyNameDirMaker = Daily_Name_Directory_Maker.DailyNameDirectoryMaker(dirMaker)
-    saveDir = dailyNameDirMaker.MkDir("DataLog")
 
     #探索モデルのパラメータ
     fieldX = 100
     fieldY = 100
     searchingFirstTime = 1000
     searchingLastTime = 4000
-
-    pollutions = np.zeros((fieldX, fieldY))
-
-
 
 
 #############汚染源を作成####################
@@ -100,14 +96,17 @@ def main():
 
 
     allPollutions = Pollution([[0 for y in range(fieldY)] for x in range(fieldX)])
+
+    calculator = CalculatorOfPollutionsAroundOrigin()
         #1秒分の濃度分布変化を計算、保存
     for origin_i in origins:
-        calculator = CalculatorOfPollutionsAroundOrigin(origin_i)
-        pollutionsDist = calculator.CalcDist(fieldX, fieldY, 1000, decreasingRatio, flowSpeed_ms)
+
+        pollutionsDist = calculator.CalcDist(origin_i, fieldX, fieldY, 100, decreasingRatio, flowSpeed_ms)
         allPollutions.Add(pollutionsDist)
         #複数の汚染源を足し合わせる
 
     allPollutions.View()
+    allPollutions.Save("DataLog/unko2.csv", 'csv')
 
 
 

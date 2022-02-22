@@ -70,10 +70,10 @@ class Pollution:
     def Save(self, savePath, format):
         """データの保存を行う関数"""
 
-        x, y, t, pollution = self.__to_list()
+        x, y, pollution = self.__to_list()
 
-        indexNames = ['x', 'y', 't', 'pollution']
-        values = [x, y, t, pollution]
+        indexNames = ['x', 'y', 'pollution']
+        values = [x, y, pollution]
 
         datas = pd.DataFrame(index=[], columns=[])
         #保存するインデックス名前と値を対応づける
@@ -99,19 +99,16 @@ class Pollution:
 
     def __to_list(self):
 
-        xlim, ylim, tlim = self.__XYt_Limits()
+        xlim, ylim = self.__XY_Limits()
 
         new_x = []
         new_y = []
-        new_t = []
         new_pollutions = []
 
         for x_count in range(xlim):
             for y_count in range(ylim):
-                for t_count in range(tlim):
-                    new_x.append(x_count)
-                    new_y.append(y_count)
-                    new_t.append(t_count)
-                    new_pollutions.append(self.__pollutionPoints[x_count][y_count][t_count])
+                new_x.append(x_count)
+                new_y.append(y_count)
+                new_pollutions.append(self.__pollutionPoints[x_count][y_count])
 
-        return new_x, new_y, new_t, new_pollutions
+        return new_x, new_y, new_pollutions

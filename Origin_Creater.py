@@ -1,5 +1,9 @@
 
+import importlib
 
+#順番変えたらなんかバグる
+import PointClass
+importlib.reload(PointClass)
 
 class OriginCreater:
 
@@ -17,6 +21,6 @@ class OriginCreater:
         changePerSec = args['changePerSec']
         history = self.__historyCreater.Create(startHistory, maxTime, maxCycleTime, changePerSec)
 
-        origin = self.__originClass(x, y, history)
+        origin = self.__originClass(PointClass.Point(x, y), history)
 
         return origin
