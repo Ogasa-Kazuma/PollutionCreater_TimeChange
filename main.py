@@ -57,19 +57,15 @@ importlib.reload(Pollution_Origin_Data_Creater)
 #########################################################################################
 def main():
 
+    #timeは汚染物質の排出が始まってからの時間を示す
 
     #探索モデルのパラメータ
     fieldX = 100
     fieldY = 100
-    searchingFirstTime = 1000
-    searchingLastTime = 4000
 
 
 #############汚染源を作成####################
-    origins = list()
-
     originCreater = Pollution_Origin_Data_Creater.PollutionOriginDataCreater()
-
 
     origin1 = originCreater.Create(x = 0, y = 80, startPollution = 100,\
                         maxTime = 4000, maxCycleTime = 20, maxChangePerSec = 1)
@@ -77,8 +73,7 @@ def main():
     origin2 = originCreater.Create(x = 0, y = 10, startPollution = 100,\
                         maxTime = 4000, maxCycleTime = 20, maxChangePerSec = 1)
 
-    origins.append(origin1)
-    origins.append(origin2)
+    originList = [origin1, origin2]
 ##################################################
 
 
@@ -99,16 +94,12 @@ def main():
 
     for t_i in range(1, 100):
         allPollutions = Pollution([[0 for y in range(fieldY)] for x in range(fieldX)])
-        for origin_i in origins:
+        for origin_i in originList:
             pollutionsDist = calculator.CalcDist(origin_i, fieldX, fieldY, t_i, decreasingRatio, flowSpeed_ms)
             allPollutions.Add(pollutionsDist)
         allPollutions.Save("DataLog/unko2.pkl", 'pkl')
             #複数の汚染源を足し合わせる
-        #allPollutions.View()
-
-
-
-
+        allPollutions.View()
 
 
 ################################################################################

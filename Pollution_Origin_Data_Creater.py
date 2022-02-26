@@ -64,6 +64,7 @@ class PollutionOriginDataCreater:
 
 
 
+    #内部クラス
     class Origin:
 
 
