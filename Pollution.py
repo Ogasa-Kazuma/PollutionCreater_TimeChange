@@ -65,15 +65,27 @@ class Pollution:
         return new_x, new_y, new_pollutions
 
 
+    def __XY_Limits(self):
+        xlim = len(self.__pollutionPoints)
+        ylim = len(self.__pollutionPoints[0])
+        return xlim, ylim
 
 
-    def Save(self, savePath, format):
+    def Save(self, savePath, format, start_t, end_t):
         """データの保存を行う関数"""
 
-        x, y, pollution = self.__to_list()
+        xlim, ylim = self.__XY_Limits()
+        new_pollutions = []
 
-        indexNames = ['x', 'y', 'pollution']
-        values = [x, y, pollution]
+        for x_i in range(xlim):
+            for y_i in range(ylim):
+                pollution = self.__pollutionPoints[x_i][y_i]
+                new_pollutions.append(pollution)
+
+
+        x, y = self.__XY_Limits()
+        indexNames = ["pollutions", "x", "y", "start_t", "end_t"]
+        values = [new_pollutions, x, y, start_t, end_t]
 
         datas = pd.DataFrame(index=[], columns=[])
         #保存するインデックス名前と値を対応づける

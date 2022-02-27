@@ -11,6 +11,7 @@ import PointClass
 importlib.reload(PointClass)
 
 sys.path.append(os.pardir + "/Python")
+sys.path.append(os.pardir)
 #描画モジュール
 import matplotlib.pyplot as plt
 
@@ -97,9 +98,9 @@ def main():
         for origin_i in originList:
             pollutionsDist = calculator.CalcDist(origin_i, fieldX, fieldY, t_i, decreasingRatio, flowSpeed_ms)
             allPollutions.Add(pollutionsDist)
-        allPollutions.Save("DataLog/unko2.pkl", 'pkl')
+        allPollutions.Save("../Searcher_TimeChange/PollutionFiles/" + str(t_i) + ".pkl", 'pkl', 0 , 100)
             #複数の汚染源を足し合わせる
-        allPollutions.View()
+        #allPollutions.View()
 
 
 ################################################################################
