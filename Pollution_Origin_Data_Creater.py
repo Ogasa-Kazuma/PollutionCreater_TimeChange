@@ -13,7 +13,7 @@ class PollutionOriginDataCreater:
 
     def Create(self, x, y, startPollution, maxTime, maxCycleTime, maxChangePerSec):
 
-        #リストと明示した方がよい
+        #開始の瞬間の濃度分布を設定する必要がある
         pollutionHistory = [startPollution]
         t = 0
 
@@ -24,7 +24,7 @@ class PollutionOriginDataCreater:
             pollutionHistory = self.__DecreasePollution(pollutionHistory, cycleTime, maxChangePerSec)
             t += cycleTime * 2
 
-        #なんか分かりづらい
+        #汚染源オブジェクトを生成（内部クラス）
         origin = self.Origin(PointClass.Point(x, y), pollutionHistory)
 
         return origin

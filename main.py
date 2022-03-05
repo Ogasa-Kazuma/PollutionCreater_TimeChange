@@ -54,26 +54,39 @@ importlib.reload(Pollution_Origin_Data_Creater)
 #######################################################################
 
 
+def CreateGraphObject():
+    fig = plt.figure()
+    graph_object = fig.add_subplot(111)
+    return graph_object
+
+
+
+
 
 #########################################################################################
 def main():
 
-    #timeは汚染物質の排出が始まってからの時間を示す
 
-    #探索モデルのパラメータ
+
+    #濃度分布モデルのサイズ
     fieldX = 100
     fieldY = 100
 
 
-#############汚染源を作成####################
+#############汚染源と汚染源の濃度履歴を作成####################
+    #ここで行っていることの意味は論文を参考にしてください
+    #汚染源の位置において、どの時刻でどのような濃度だったか、という履歴を作成します。
     originCreater = Pollution_Origin_Data_Creater.PollutionOriginDataCreater()
 
+    #maxCycleTimeは、濃度が上がるか、下がるかのサイクルの最大秒数の調整をします(サイクルは最大秒数を上限としてランダムに決定します)
+    #maxChangePerSecは、一秒で最大どれくらい濃度変化があるかを設定します（ランダムに設定します）
     origin1 = originCreater.Create(x = 0, y = 80, startPollution = 100,\
                         maxTime = 4000, maxCycleTime = 20, maxChangePerSec = 1)
 
     origin2 = originCreater.Create(x = 0, y = 10, startPollution = 100,\
                         maxTime = 4000, maxCycleTime = 20, maxChangePerSec = 1)
 
+    #２つの汚染源をまとめる
     originList = [origin1, origin2]
 ##################################################
 
@@ -82,25 +95,42 @@ def main():
 
  ########################## 時間変化に応じた濃度分布を計算 #####################################
 
+
     decreasingRatio = 1 #汚染源中心からの距離と濃度の減少比
     flowSpeed_ms = 1 #流れの速度
 
-
-
-
-
-
+    #汚染源周辺の濃度分布を計算するオブジェクト
     calculator = CalculatorOfPollutionsAroundOrigin()
-        #1秒分の濃度分布変化を計算、保存
 
-    for t_i in range(1, 100):
+    #ファイル名に目印をつける
+    fileHeadName = input()
+
+    #1秒分の濃度分布変化を計算、保存
+    #timeは汚染物質の排出が始まってからの時間を示す
+    time_start = 0
+    time_last = 100
+
+    for t_i in range(time_start, time_last):
+        #全体の濃度分布を格納するためのPollutionオブジェクトを生成(この時点では空)
         allPollutions = Pollution([[0 for y in range(fieldY)] for x in range(fieldX)])
-        for origin_i in originList:
+
+        for origin_i in originList: #汚染源一つ一つの周辺の濃度分布を計算
+
+            #1つの汚染源周辺の濃度分布を計算
             pollutionsDist = calculator.CalcDist(origin_i, fieldX, fieldY, t_i, decreasingRatio, flowSpeed_ms)
+            #上記で計算した、一つの汚染源周辺の濃度分布を、複数の汚染源周辺の濃度分布（全体モデル）に加算
             allPollutions.Add(pollutionsDist)
-        allPollutions.Save("../Searcher_TimeChange/PollutionFiles/" + str(t_i) + ".pkl", 'pkl', 0 , 100)
-            #複数の汚染源を足し合わせる
-        #allPollutions.View()
+
+        #上書きに注意
+        #1秒ずつ保存。ファイル名は秒数にちなんだものにする
+        #他のフォルダ（探索者フォルダ）に保存しているので注意
+        allPollutions.Save("../Searcher_TimeChange/PollutionFiles/" + fileHeadName + str(t_i) + ".pkl")
+
+
+        #表示される濃度値は「相対濃度」であり、白いところが0とは限らないので注意
+        #描画はメモリを食うし、時間がかかるのであくまで結果確認用として使ってください（実行時に警告も出ると思います)
+        graph_object = CreateGraphObject()
+        allPollutions.View(graph_object)
 
 
 ################################################################################
